@@ -1,6 +1,9 @@
 import './App.css';
+import { useEffect, useState } from 'react'; 
 
 function App() {
+  const [details, setDetails] = useState([]);
+
 	// 1. Randomize the order of the following number set: "44, 154, 32, 41, 7, 22, 17, 21, 9, 20" //
   function shuffle(array) {
 	  let counter = array.length;
@@ -42,9 +45,33 @@ function App() {
 
 	// 3. Fetch and parse the json data at https://blueprintinteractive.com/test.json 
 
+  useEffect(() => {
+    fetch('https://blueprintinteractive.com/test.json ')
+      .then((res) => res.json())
+      .then((res) => {
+        setDetails(res);
+      });
+  }, []);
 
 
-	return <div className='App'></div>;
+
+	return (
+  <div className='App'>
+      <h1>Parsed JSON Data</h1>
+      <ul>
+        {details.map((detail) => {
+          return (
+            <li>
+              <p>First Name: {detail.firstname}</p>
+              <p>Last Name: {detail.lastname}</p>
+              <p>Email: {detail.email}</p>
+              <p>Gender: {detail.gender}</p>
+            </li>
+          )
+        })}
+      </ul>
+  </div>
+  )
 }
 
 export default App;
